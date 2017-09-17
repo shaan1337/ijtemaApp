@@ -4,8 +4,12 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { WelcomePage } from '../pages/welcome/welcome';
-import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
+import { ProgrammePage } from '../pages/programme/programme';
+import { CompetitionsPage } from '../pages/competitions/competitions';
+import { LeaderboardPage } from '../pages/leaderboard/leaderboard';
+import { NewsPage } from '../pages/news/news';
+import { SocialPage } from '../pages/social/social';
+
 import { Storage } from '@ionic/storage';
 
 @Component({
@@ -14,17 +18,20 @@ import { Storage } from '@ionic/storage';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = HomePage;
+  rootPage: any = ProgrammePage;
 
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{title: string, component: any, icon: string}>;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: HomePage },
-      { title: 'List', component: ListPage }
+      { title: 'Programme', component: ProgrammePage , icon: 'list-box'},
+      { title: 'Competitions', component: CompetitionsPage, icon: 'trophy' },
+      { title: 'Leaderboard', component: LeaderboardPage, icon: 'podium' },
+      { title: 'News', component: NewsPage, icon: 'information-circle' },      
+      { title: 'Social Networks', component: SocialPage, icon: 'logo-twitter' }
     ];
 
   }
@@ -47,7 +54,7 @@ export class MyApp {
   }
 
   openWelcomePage(){
-    this.nav.push(WelcomePage);    
+    this.nav.push(WelcomePage);
   }
 
   openPage(page) {

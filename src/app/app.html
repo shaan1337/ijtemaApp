@@ -1,13 +1,17 @@
 <ion-menu [content]="content">
   <ion-header>
     <ion-toolbar>
-      <ion-title>Menu</ion-title>
+      <ion-item no-lines>
+        <img src="assets/img/logo.svg" width="170" class="center" padding/>
+        <ion-title class="center">MKA Ijtema 2017</ion-title>
+      </ion-item>
     </ion-toolbar>
   </ion-header>
 
   <ion-content>
-    <ion-list>
+    <ion-list no-lines>
       <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+        <ion-icon item-left [name]="p.icon"></ion-icon>          
         {{p.title}}
       </button>
     </ion-list>
