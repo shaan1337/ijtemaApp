@@ -7,7 +7,7 @@ import { ProgrammePage } from './programme';
     ProgrammePage,
   ],
   imports: [
-    IonicPageModule.forChild(ProgrammePage),
+    IonicPageModule.forChild(ProgrammePage)
   ],
 })
 export class ProgrammePageModule {}
