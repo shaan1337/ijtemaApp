@@ -16,6 +16,24 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+    <ion-list *ngFor="let p of competitions">          
+      <ion-item-divider *ngIf="p.type=='day'" color="primary" id="{{ 'programme-' + p.id }}">
+          {{ p.title }}
+      </ion-item-divider>
 
-</ion-content>
+      <ion-card *ngIf="p.type=='competition'" id="{{ 'programme-' + p.id }}">
+          <ion-card-header><h1>{{p.time +' - '+ p.title}}</h1></ion-card-header>
+          <ion-list *ngFor="let c of p.competitions">
+              <ion-item>
+                  <ion-icon item-start name="arrow-dropright"></ion-icon>                  
+                  {{ c }}
+                  <button ion-button outline item-end icon-left>
+                    <ion-icon name="create"></ion-icon>
+                    Register
+                  </button>           
+              </ion-item>
+          </ion-list>
+      </ion-card>
+    </ion-list>
+  </ion-content>

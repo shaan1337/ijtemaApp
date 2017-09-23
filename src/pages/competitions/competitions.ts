@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { ProgrammeProvider } from '../../providers/programme/programme';
 
 /**
  * Generated class for the CompetitionsPage page.
@@ -14,8 +15,10 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'competitions.html',
 })
 export class CompetitionsPage {
+  competitions: any[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private programmeProvider:ProgrammeProvider) {
+    this.competitions = this.programmeProvider.getCompetitions();        
   }
 
   ionViewDidLoad() {
