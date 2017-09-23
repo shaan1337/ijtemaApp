@@ -15,6 +15,7 @@ import { AlertController,Content } from 'ionic-angular';
   templateUrl: 'programme.html',
 })
 export class ProgrammePage {
+  pageLoaded: boolean = false;
   @ViewChild(Content) content: Content;
 
   //each item must have at least a 'date' or 'time'. Last item in a day must have an 'endTime'.
@@ -32,7 +33,7 @@ export class ProgrammePage {
     { type: 'program', time: '18:50', title: 'Tilawat Qur\'an' },
     { type: 'program', time: '19:00', title: 'Ahad' },
     { type: 'program', time: '19:00', endTime: '21:00', title: 'Refreshments' },    
-    { type: 'day', date: '2018-10-29', title:'Saturday 29th October'},    
+    { type: 'day', date: '2017-09-24', title:'Saturday 29th October'},    
     { type: 'competition', time: '19:00', title: 'Competitions - Open to All' },
     { type: 'program', time: '19:00', title: 'Ahad' },
     { type: 'program',  time: '19:00', endTime: '21:00', title: 'Refreshments' }    
@@ -68,7 +69,7 @@ export class ProgrammePage {
       try{
         var p = this.programmes[i];
 
-        var date, startTime, endTime;
+        var startTime, endTime;
 
         if(p['date']!==undefined){
           date = this.parseDate(p['date']);
@@ -108,12 +109,12 @@ export class ProgrammePage {
 
     if(nextProgramme==-1) nextProgramme = 0; //all programmes completed
     
-    var programme = document.getElementById('programme-'+nextProgramme);
-    programme.scrollIntoView();
+    var programme = document.getElementById('programme-'+nextProgramme);      
+    this.content.scrollTo(0,programme.offsetTop,500);
   }
 
-  ionViewDidLoad() {
-    this.scrollToNextProgramme();
+  ionViewDidEnter() {
+      this.scrollToNextProgramme();
   }
 
 }
