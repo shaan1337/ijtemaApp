@@ -17,21 +17,19 @@
 
 
 <ion-content>
-    <ion-list *ngFor="let p of competitions">          
+    <ion-list *ngFor="let p of competitions; let i = index;" [attr.data-index]="i">          
       <ion-item-divider *ngIf="p.type=='day'" color="primary" id="{{ 'programme-' + p.id }}">
           {{ p.title }}
       </ion-item-divider>
 
       <ion-card *ngIf="p.type=='competition'" id="{{ 'programme-' + p.id }}">
-          <ion-card-header><h1>{{p.time +' - '+ p.title}}</h1></ion-card-header>
-          <ion-list *ngFor="let c of p.competitions">
-              <ion-item>
-                  <ion-icon item-start name="arrow-dropright"></ion-icon>                  
+          <ion-card-header text-wrap><h1>{{p.time +' - '+ p.title}}</h1></ion-card-header>
+          <ion-list *ngFor="let c of p.competitions; let j = index;" [attr.data-index]="j">
+              <ion-item text-wrap>
                   {{ c }}
-                  <button ion-button outline item-end icon-left>
-                    <ion-icon name="create"></ion-icon>
-                    Register
-                  </button>           
+                  <ion-icon *ngIf="registrationState[i][j]=='not-registered'" color="primary" item-end name="add-circle" (click)='register(i,j)'></ion-icon>
+                  <ion-spinner *ngIf="registrationState[i][j]=='loading'" color="primary" item-end></ion-spinner>
+                  <ion-icon *ngIf="registrationState[i][j]=='registered'" color="secondary" item-end name='checkmark-circle' (click)='unregister(i,j)'></ion-icon>
               </ion-item>
           </ion-list>
       </ion-card>

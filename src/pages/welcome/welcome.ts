@@ -19,7 +19,7 @@ export class WelcomePage {
   slides = [
     {
       title: "Assalamu alaikum wa rahmatullah!",
-      description: "Peace be on you and the mercy and blessings of Allah. Welcome to the official app for the <b>Majlis Khuddam-ul-Ahmadiyya Mauritius National Ijtema 2017</b>! To get started, swipe to the next slides to view some features of the app.",
+      description: "Welcome to the official app for the <br><b>Majlis Khuddam-ul-Ahmadiyya Mauritius National Ijtema 2017</b>!",
       image: "assets/img/logo.svg",
     },
     {
