@@ -17,17 +17,17 @@
 
 
 <ion-content>
-  <ion-list *ngFor="let p of programmes; let i = index" [attr.data-index]="i">          
-    <ion-item-divider *ngIf="p.type=='day'" color="primary" id="{{ 'programme-' + i }}">
+  <ion-list *ngFor="let p of programmes">          
+    <ion-item-divider *ngIf="p.type=='day'" color="primary" id="{{ 'programme-' + p.id }}">
         {{ p.title }}
     </ion-item-divider>
 
-    <ion-item *ngIf="p.type=='program'" id="{{ 'programme-' + i }}">
+    <ion-item *ngIf="p.type=='program'" id="{{ 'programme-' + p.id }}">
       <h1 item-start>{{ p.time }}</h1>
       <div style="font-size:1.1em; margin-left: 5px">{{ p.title }}</div>
     </ion-item>
 
-    <ion-item *ngIf="p.type=='competition'" id="{{ 'programme-' + i }}">
+    <ion-item *ngIf="p.type=='competition'" id="{{ 'programme-' + p.id }}">
         <h1 item-start>{{ p.time }}</h1>
         <div style="font-size:1.1em; margin-left: 5px">{{ p.title }}</div>
         <button ion-button outline item-end icon-left>

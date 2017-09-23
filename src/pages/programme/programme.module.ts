@@ -8,6 +8,6 @@ import { ProgrammePage } from './programme';
   ],
   imports: [
     IonicPageModule.forChild(ProgrammePage)
-  ],
+  ]
 })
 export class ProgrammePageModule {}
