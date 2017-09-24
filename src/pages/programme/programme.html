@@ -30,7 +30,7 @@
     <ion-item *ngIf="p.type=='competition'" id="{{ 'programme-' + p.id }}">
         <h1 item-start>{{ p.time }}</h1>
         <div style="font-size:1.1em; margin-left: 5px" text-wrap>{{ p.title }}</div>
-        <button ion-button outline item-end icon-left>
+        <button ion-button outline item-end icon-left (click)="openCompetitionsPage(p.id)">
           <ion-icon name="create"></ion-icon>
           Register
         </button>

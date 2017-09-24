@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Content } from 'ionic-angular';
 import { ProgrammeProvider } from '../../providers/programme/programme';
+import { CompetitionsPage } from '../competitions/competitions';
 /**
  * Generated class for the ProgrammePage page.
  *
@@ -17,6 +18,7 @@ import { ProgrammeProvider } from '../../providers/programme/programme';
 export class ProgrammePage {
   @ViewChild(Content) content: Content;
   programmes: any[];
+  pageLoaded: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private programmeProvider: ProgrammeProvider) {
     this.programmes = this.programmeProvider.getProgrammes();    
@@ -24,12 +26,19 @@ export class ProgrammePage {
 
   scrollToNextProgramme(){
     var nextProgramme = this.programmeProvider.getNextProgrammeId();    
-    var programme = document.getElementById('programme-'+nextProgramme);      
+    var programme = document.getElementById('programme-'+nextProgramme);
     this.content.scrollTo(0,programme.offsetTop,500);
   }
 
+  openCompetitionsPage(programmeId: number){
+    this.navCtrl.push(CompetitionsPage, {goToProgrammeId: programmeId});
+  }
+
   ionViewDidEnter() {
-      this.scrollToNextProgramme();
+      if(!this.pageLoaded)
+        this.scrollToNextProgramme();
+
+      this.pageLoaded = true;
   }
 
 }

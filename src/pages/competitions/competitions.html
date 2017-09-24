@@ -18,11 +18,11 @@
 
 <ion-content>
     <ion-list *ngFor="let p of competitions; let i = index;" [attr.data-index]="i">          
-      <ion-item-divider *ngIf="p.type=='day'" color="primary" id="{{ 'programme-' + p.id }}">
+      <ion-item-divider *ngIf="p.type=='day'" color="primary" id="{{ 'programme-competition-' + p.id }}">
           {{ p.title }}
       </ion-item-divider>
 
-      <ion-card *ngIf="p.type=='competition'" id="{{ 'programme-' + p.id }}">
+      <ion-card *ngIf="p.type=='competition'" id="{{ 'programme-competition-' + p.id }}">
           <ion-card-header text-wrap><h1>{{p.time +' - '+ p.title}}</h1></ion-card-header>
           <ion-list *ngFor="let c of p.competitions; let j = index;" [attr.data-index]="j">
               <ion-item text-wrap>
@@ -34,4 +34,4 @@
           </ion-list>
       </ion-card>
     </ion-list>
-  </ion-content>
+</ion-content>

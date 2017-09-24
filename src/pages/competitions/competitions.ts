@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, Content } from 'ionic-angular';
 import { ProgrammeProvider } from '../../providers/programme/programme';
 import { Storage } from '@ionic/storage';
 
@@ -16,10 +16,16 @@ import { Storage } from '@ionic/storage';
   templateUrl: 'competitions.html',
 })
 export class CompetitionsPage {
+  @ViewChild(Content) content: Content;
+  
+  goToProgrammeId: any;  
   competitions: any[];
   registrationState: any[][] = new Array();
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private programmeProvider:ProgrammeProvider, private storage: Storage) {
+
+    this.goToProgrammeId = navParams.get("goToProgrammeId");
+
     this.competitions = this.programmeProvider.getCompetitions();
     for(var i=0;i<this.competitions.length;i++){
       var p = this.competitions[i];
@@ -69,8 +75,15 @@ export class CompetitionsPage {
     },1000);
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad CompetitionsPage');
+  scrollToProgramme(programmeId){
+    var programme = document.getElementById('programme-competition-'+programmeId);
+    this.content.scrollTo(0,programme.offsetTop,500);
+  }
+
+  ionViewDidEnter(){
+    if(this.goToProgrammeId){
+      this.scrollToProgramme(this.goToProgrammeId);
+    }
   }
 
 }
