@@ -1,0 +1,80 @@
+<!--
+  Generated template for the PersonaldetailsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Personal Details</ion-title>  
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <ion-item text-wrap>
+        Please enter your personal details to be able to register for competitions.
+  </ion-item>
+  <form (ngSubmit)="submitDetails()" [formGroup]="detailsForm">
+    <ion-item>
+      <ion-label>Full Name</ion-label>
+      <ion-input type="text" formControlName="name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Mobile Phone</ion-label>
+      <ion-input type="text" formControlName="mobile" maxlength="8"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Majlis</ion-label>
+      <ion-select formControlName="majlis">     
+        <ion-option value="albion">Albion</ion-option>
+        <ion-option value="casernes">Casernes</ion-option>
+        <ion-option value="cassis">Cassis</ion-option>
+        <ion-option value="curepipe">Curepipe</ion-option>
+        <ion-option value="flacq">Flacq</ion-option>
+        <ion-option value="gentilly">Gentilly</ion-option>
+        <ion-option value="montagne-blanche">Montagne Blanche</ion-option>
+        <ion-option value="new-grove">New Grove</ion-option>
+        <ion-option value="phoenix">Phoenix</ion-option>
+        <ion-option value="port-louis">Port Louis</ion-option>
+        <ion-option value="quartier-militaire">Quartier Militaire</ion-option>
+        <ion-option value="quatre-bornes">Quatre Bornes</ion-option>
+        <ion-option value="rose-hill">Rose Hill</ion-option>
+        <ion-option value="saint-pierre">Saint Pierre</ion-option>
+        <ion-option value="stanley">Stanley</ion-option>
+        <ion-option value="trefles">Trèfles</ion-option>
+        <ion-option value="triolet">Triolet</ion-option>
+        <ion-option value="other">Other</ion-option>        
+      </ion-select>      
+    </ion-item>
+    <ion-item *ngIf="(detailsForm.get('majlis').value=='quatre-bornes' || detailsForm.get('majlis').value=='rose-hill' || detailsForm.get('majlis').value=='trefles')">
+      <ion-label>Halqa</ion-label>     
+      <ion-select formControlName="halqa" *ngIf="detailsForm.get('majlis').value=='quatre-bornes'">
+        <ion-option value="centre">Centre</ion-option>
+        <ion-option value="east">East</ion-option>
+        <ion-option value="west">West</ion-option>
+      </ion-select>
+      <ion-select formControlName="halqa" *ngIf="detailsForm.get('majlis').value=='rose-hill'">
+          <ion-option value="belle-rose">Belle-Rose</ion-option>          
+          <ion-option value="centre">Centre</ion-option>
+          <ion-option value="north-east">North-East</ion-option>
+          <ion-option value="plaisance">Plaisance</ion-option>          
+          <ion-option value="west">West</ion-option>
+      </ion-select>
+      <ion-select formControlName="halqa" *ngIf="detailsForm.get('majlis').value=='trefles'">
+          <ion-option value="centre">Centre</ion-option>
+          <ion-option value="north">North</ion-option>
+          <ion-option value="west">West</ion-option>
+      </ion-select>      
+    </ion-item>
+    <button *ngIf="!loading" ion-button type="submit" block [disabled]="detailsForm.invalid">Save</button>
+    <ion-item *ngIf="loading" text-center no-lines>
+      <ion-spinner text-center ></ion-spinner>
+    </ion-item>
+
+    <ion-item text-wrap *ngIf="this.detailsExist" no-lines color="danger">
+        Editing your personal details will also affect all competitions you've registered for previously!
+    </ion-item>
+  </form>
+</ion-content>

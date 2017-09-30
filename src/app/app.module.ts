@@ -16,6 +16,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { IonicStorageModule } from '@ionic/storage';
 import { ProgrammeProvider } from '../providers/programme/programme';
 import { HttpModule } from '@angular/http';
+import { PersonaldetailsPage } from '../pages/personaldetails/personaldetails';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { HttpModule } from '@angular/http';
     CompetitionsPage,
     LeaderboardPage,
     NewsPage,
-    SocialPage
+    SocialPage,
+    PersonaldetailsPage
   ],
   imports: [
     BrowserModule,
@@ -41,7 +43,8 @@ import { HttpModule } from '@angular/http';
     CompetitionsPage,
     LeaderboardPage,
     NewsPage,
-    SocialPage
+    SocialPage,
+    PersonaldetailsPage
   ],
   providers: [
     StatusBar,

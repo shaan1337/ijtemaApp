@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, Content } from 'ionic-angular';
 import { ProgrammeProvider } from '../../providers/programme/programme';
 import { Storage } from '@ionic/storage';
 import { ToastController } from 'ionic-angular';
+import { PersonaldetailsPage } from '../personaldetails/personaldetails';
 
 /**
  * Generated class for the CompetitionsPage page.
@@ -42,16 +43,16 @@ export class CompetitionsPage {
 
   }
 
-  getRegistrationId(competitionTag: string): string{
+  private getRegistrationId(competitionTag: string): string{
     return 'competition-'+competitionTag;
   }
 
-  setRegistrationState(competitionTag: string, value: string){
+  private setRegistrationState(competitionTag: string, value: string){
     this.storage.set(this.getRegistrationId(competitionTag),value);
     this.registrationState[competitionTag] = value;
   }
 
-  getRegistrationState(competitionTag: string){
+  private getRegistrationState(competitionTag: string){
     var id = this.getRegistrationId(competitionTag);
     var result = this.storage.get(id);
     return result.then((val) =>{
@@ -60,28 +61,37 @@ export class CompetitionsPage {
     });
   }
 
-  register(competitionTag: string){
-    this.setRegistrationState(competitionTag,'loading');
-    setTimeout(()=>{
-      this.setRegistrationState(competitionTag,'registered');
-      this.showToast('Successfully registered'); 
-    },1000);
+  public register(competitionTag: string){
+    this.getPersonalDetails().then((details) => {
+      if(!details){
+        this.openPersonalDetailsPage({competitionTag: competitionTag})        
+      }
+      else{
+        //TODO: call api here to register with details.token
+        this.setRegistrationState(competitionTag,'loading');
+        setTimeout(()=>{
+          this.setRegistrationState(competitionTag,'registered');
+          this.showToast('Successfully registered'); 
+        },1000);
+      }
+    });
   }
 
-  unregister(competitionTag: string){
+  public unregister(competitionTag: string){
     this.setRegistrationState(competitionTag,'loading');
     setTimeout(()=>{
+      //TODO: call api here to unregister with details.token
       this.setRegistrationState(competitionTag,'not-registered');
       this.showToast('Successfully unregistered'); 
     },1000);
   }
 
-  scrollToProgramme(programmeId){
+  private scrollToProgramme(programmeId){
     var programme = document.getElementById('programme-competition-'+programmeId);
     this.content.scrollTo(0,programme.offsetTop,500);
   }
 
-  showToast(message){
+  private showToast(message){
     const toast = this.toastCtrl.create({
       message: message,
       duration: 1000,
@@ -89,6 +99,17 @@ export class CompetitionsPage {
     });
 
     toast.present();
+  }
+
+  private getPersonalDetails(){
+    return this.storage.get('competitions-personal-details').then((val) => {
+      return val;
+    });
+  }
+
+  private openPersonalDetailsPage(data){
+    if(!data) data = {};
+    this.navCtrl.push(PersonaldetailsPage, data);    
   }
 
   ionViewDidEnter(){
