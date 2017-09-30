@@ -20,7 +20,7 @@ export class CompetitionsPage {
   
   goToProgrammeId: any;  
   competitions: any[];
-  registrationState: any[][] = new Array();
+  registrationState: any = {};
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private programmeProvider:ProgrammeProvider, private storage: Storage) {
 
@@ -29,49 +29,47 @@ export class CompetitionsPage {
     this.competitions = this.programmeProvider.getCompetitions();
     for(var i=0;i<this.competitions.length;i++){
       var p = this.competitions[i];
-      this.registrationState.push(new Array());
 
       if(p.competitions !== undefined)
       for(var j=0;j<p.competitions.length;j++){
-        this.registrationState[i].push("");
-
-        this.getRegistrationState(i,j).then((res)=>{
-          this.registrationState[res.i][res.j] = res.val;
+        var tag = p.competitions[j].tag;
+        this.getRegistrationState(tag).then((res)=>{
+          this.registrationState[res.tag] = res.state;
         });
       }
     }
 
   }
 
-  getRegistrationId(i: number, j: number): string{
-    return 'competition-registration-'+i+'-'+j;
+  getRegistrationId(competitionTag: string): string{
+    return 'competition-'+competitionTag;
   }
 
-  setRegistrationState(i: number, j: number, value: string){
-    this.storage.set(this.getRegistrationId(i,j),value);
-    this.registrationState[i][j] = value;
+  setRegistrationState(competitionTag: string, value: string){
+    this.storage.set(this.getRegistrationId(competitionTag),value);
+    this.registrationState[competitionTag] = value;
   }
 
-  getRegistrationState(i: number, j: number){
-    var id = this.getRegistrationId(i,j);
+  getRegistrationState(competitionTag: string){
+    var id = this.getRegistrationId(competitionTag);
     var result = this.storage.get(id);
     return result.then((val) =>{
-      if(!val) return {val: 'not-registered', i: i, j: j};
-      else return {val: val, i: i, j: j};
+      if(!val || val=='not-registered') return {tag: competitionTag, state: 'not-registered'};
+      else return {tag: competitionTag, state: 'registered'};
     });
   }
 
-  register(i: number, j:number){
-    this.setRegistrationState(i,j,'loading');
+  register(competitionTag: string){
+    this.setRegistrationState(competitionTag,'loading');
     setTimeout(()=>{
-      this.setRegistrationState(i,j,'registered');      
+      this.setRegistrationState(competitionTag,'registered');      
     },1000);
   }
 
-  unregister(i: number, j: number){
-    this.setRegistrationState(i,j,'loading');
+  unregister(competitionTag: string){
+    this.setRegistrationState(competitionTag,'loading');
     setTimeout(()=>{
-      this.setRegistrationState(i,j,'not-registered');
+      this.setRegistrationState(competitionTag,'not-registered');
     },1000);
   }
 

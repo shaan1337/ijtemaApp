@@ -17,19 +17,19 @@
 
 
 <ion-content>
-    <ion-list *ngFor="let p of competitions; let i = index;" [attr.data-index]="i">          
+    <ion-list *ngFor="let p of competitions">          
       <ion-item-divider *ngIf="p.type=='day'" color="primary" id="{{ 'programme-competition-' + p.id }}">
           {{ p.title }}
       </ion-item-divider>
 
       <ion-card *ngIf="p.type=='competition'" id="{{ 'programme-competition-' + p.id }}">
           <ion-card-header text-wrap><h1>{{p.time +' - '+ p.title}}</h1></ion-card-header>
-          <ion-list *ngFor="let c of p.competitions; let j = index;" [attr.data-index]="j">
+          <ion-list *ngFor="let c of p.competitions">
               <ion-item text-wrap>
-                  {{ c }}
-                  <ion-icon *ngIf="registrationState[i][j]=='not-registered'" color="primary" item-end name="add-circle" (click)='register(i,j)'></ion-icon>
-                  <ion-spinner *ngIf="registrationState[i][j]=='loading'" color="primary" item-end></ion-spinner>
-                  <ion-icon *ngIf="registrationState[i][j]=='registered'" color="secondary" item-end name='checkmark-circle' (click)='unregister(i,j)'></ion-icon>
+                  {{ c.name }}
+                  <ion-icon *ngIf="registrationState[c.tag]=='not-registered'" color="primary" item-end name="add-circle" (click)='register(c.tag)'></ion-icon>
+                  <ion-spinner *ngIf="registrationState[c.tag]=='loading'" color="primary" item-end></ion-spinner>
+                  <ion-icon *ngIf="registrationState[c.tag]=='registered'" color="secondary" item-end name='checkmark-circle' (click)='unregister(c.tag)'></ion-icon>
               </ion-item>
           </ion-list>
       </ion-card>

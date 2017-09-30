@@ -18,16 +18,33 @@ export class ProgrammeProvider {
     { type: 'day', date: '2017-09-23', title:'Friday 28th October'},
     { type: 'program', time: '10:00', title: 'Jummah Prayer with Asr' },
     { type: 'program', time: '13:45', title: 'Hoisting of Flag & Du\'a' },
-    { type: 'competition', time: '14:00', title: 'Fun Games', competitions: ['Domino (Preliminary Round)', 'Carrom', 'Dart', 'Foot for Fun']},
+    { type: 'competition', time: '14:00', title: 'Fun Games',
+      competitions: [
+        {name: 'Domino (Preliminary Round)', tag: 'domino'},
+        {name: 'Carrom', tag: 'carrom'},
+        {name: 'Dart', tag: 'dart'},
+        {name: 'Foot for Fun', tag: 'foot-for-fun'}
+      ]},
     { type: 'program', time: '15:00', title: 'Tea' },
     { type: 'program', time: '17:30', title: 'Dinner' },
     { type: 'program', time: '18:30', title: 'Maghrib & Isha Prayers' },
     { type: 'program', time: '18:50', title: 'Tilawat Qur\'an' },
     { type: 'program', time: '19:00', title: 'Ahad' },
-    { type: 'competition', time: '19:00', title: 'Competitions',competitions: ['Nazam','Speech','Foot-A-3','IronMan','PlayStation']},        
+    { type: 'competition', time: '19:00', title: 'Competitions',
+      competitions: [
+        {name: 'Nazam', tag: 'nazam'},
+        {name: 'Speech', tag: 'speech'},
+        {name: 'Foot-A-3', tag: 'foot-a-3'},
+        {name: 'Iron Man', tag: 'iron-man'},
+        {name: 'PlayStation', tag: 'playstation'}
+    ]},   
     { type: 'program', time: '19:00', endTime: '21:00', title: 'Refreshments' },
     { type: 'day', date: '2017-09-24', title:'Saturday 29th October'},    
-    { type: 'competition', time: '19:00', title: 'Competitions - Open to All' },
+    { type: 'competition', time: '19:00', title: 'Competitions - Open to All',
+      competitions: [
+        {name: 'Domino (Atfaal)', tag: 'domino-atfaal'}
+      ]
+    },
     { type: 'program', time: '19:00', title: 'Ahad' },
     { type: 'program',  time: '19:00', endTime: '21:00', title: 'Refreshments' }    
   ];
