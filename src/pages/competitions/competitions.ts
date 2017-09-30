@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Content } from 'ionic-angular';
 import { ProgrammeProvider } from '../../providers/programme/programme';
 import { Storage } from '@ionic/storage';
+import { ToastController } from 'ionic-angular';
 
 /**
  * Generated class for the CompetitionsPage page.
@@ -22,7 +23,7 @@ export class CompetitionsPage {
   competitions: any[];
   registrationState: any = {};
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private programmeProvider:ProgrammeProvider, private storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private programmeProvider:ProgrammeProvider, private storage: Storage, private toastCtrl: ToastController) {
 
     this.goToProgrammeId = navParams.get("goToProgrammeId");
 
@@ -62,7 +63,8 @@ export class CompetitionsPage {
   register(competitionTag: string){
     this.setRegistrationState(competitionTag,'loading');
     setTimeout(()=>{
-      this.setRegistrationState(competitionTag,'registered');      
+      this.setRegistrationState(competitionTag,'registered');
+      this.showToast('Successfully registered'); 
     },1000);
   }
 
@@ -70,12 +72,23 @@ export class CompetitionsPage {
     this.setRegistrationState(competitionTag,'loading');
     setTimeout(()=>{
       this.setRegistrationState(competitionTag,'not-registered');
+      this.showToast('Successfully unregistered'); 
     },1000);
   }
 
   scrollToProgramme(programmeId){
     var programme = document.getElementById('programme-competition-'+programmeId);
     this.content.scrollTo(0,programme.offsetTop,500);
+  }
+
+  showToast(message){
+    const toast = this.toastCtrl.create({
+      message: message,
+      duration: 1000,
+      position: 'bottom'
+    });
+
+    toast.present();
   }
 
   ionViewDidEnter(){
