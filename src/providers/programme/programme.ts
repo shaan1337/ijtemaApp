@@ -20,7 +20,7 @@ export class ProgrammeProvider {
     { type: 'program', time: '13:45', title: 'Hoisting of Flag & Du\'a' },
     { type: 'competition', time: '14:00', title: 'Fun Games',
       competitions: [
-        {name: 'Domino (Preliminary Round)', tag: 'domino'},
+        {name: 'Domino (Preliminary Round)', tag: 'domino', teamsize: 2},
         {name: 'Carrom', tag: 'carrom'},
         {name: 'Dart', tag: 'dart'},
         {name: 'Foot for Fun', tag: 'foot-for-fun'}
@@ -32,9 +32,9 @@ export class ProgrammeProvider {
     { type: 'program', time: '19:00', title: 'Ahad' },
     { type: 'competition', time: '19:00', title: 'Competitions',
       competitions: [
-        {name: 'Nazam', tag: 'nazam'},
-        {name: 'Speech', tag: 'speech'},
-        {name: 'Foot-A-3', tag: 'foot-a-3'},
+        {name: 'Nazam', tag: 'nazam', link: {text:'View rules',url:'http://ijtema.khuddam.mu/content/LiteraryCompetitions.pdf'}},
+        {name: 'Speech', tag: 'speech', link: {text:'View rules',url:'http://ijtema.khuddam.mu/content/LiteraryCompetitions.pdf'}},
+        {name: 'Foot-A-3', tag: 'foot-a-3', teamsize: 3},
         {name: 'Iron Man', tag: 'iron-man'},
         {name: 'PlayStation', tag: 'playstation'}
     ]},   
