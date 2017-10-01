@@ -17,6 +17,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { ProgrammeProvider } from '../providers/programme/programme';
 import { HttpModule } from '@angular/http';
 import { PersonaldetailsPage } from '../pages/personaldetails/personaldetails';
+import { RegisterTeamPage } from '../pages/register-team/register-team';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { PersonaldetailsPage } from '../pages/personaldetails/personaldetails';
     LeaderboardPage,
     NewsPage,
     SocialPage,
-    PersonaldetailsPage
+    PersonaldetailsPage,
+    RegisterTeamPage
   ],
   imports: [
     BrowserModule,
@@ -44,7 +46,8 @@ import { PersonaldetailsPage } from '../pages/personaldetails/personaldetails';
     LeaderboardPage,
     NewsPage,
     SocialPage,
-    PersonaldetailsPage
+    PersonaldetailsPage,
+    RegisterTeamPage
   ],
   providers: [
     StatusBar,

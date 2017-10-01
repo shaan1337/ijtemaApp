@@ -32,9 +32,9 @@
           <ion-list *ngFor="let c of p.competitions">
               <ion-item text-wrap>
                   {{ c.name }}
-                  <ion-icon *ngIf="registrationState[c.tag]=='not-registered'" color="primary" item-end name="add-circle" (click)='register(c.tag)'></ion-icon>
+                  <ion-icon *ngIf="registrationState[c.tag]=='not-registered'" color="primary" item-end name="add-circle" (click)='register(c)'></ion-icon>
                   <ion-spinner *ngIf="registrationState[c.tag]=='loading'" color="primary" item-end></ion-spinner>
-                  <ion-icon *ngIf="registrationState[c.tag]=='registered'" color="secondary" item-end name='checkmark-circle' (click)='unregister(c.tag)'></ion-icon>
+                  <ion-icon *ngIf="registrationState[c.tag]=='registered'" color="secondary" item-end name='checkmark-circle' (click)='unregister(c)'></ion-icon>
                   <p *ngIf="c.teamsize">Only the team leader must register for the {{ c.teamsize }} team members. </p>
                   <p *ngIf="c.comment">{{ c.comment }}</p>
                   <p *ngIf="c.link"><a [href]="c.link.url">{{ c.link.text }}</a></p>

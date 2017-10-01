@@ -1,0 +1,26 @@
+<!--
+  Generated template for the RegisterTeamPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Register Team for {{competition.name}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form (ngSubmit)="registerTeam()" [formGroup]="membersForm">        
+    <ion-list>
+      <ion-item *ngFor="let member of members;">
+        <ion-label>{{member.index}}</ion-label>
+        <ion-input type="text" [formControlName]="member.id" [disabled]="member.index==1" [attr.autofocus]="member.index==2?'':null"></ion-input>      
+      </ion-item>
+    </ion-list>
+    <button *ngIf="!loading" ion-button type="submit" block [disabled]="membersForm.invalid">Register Team</button>
+    <ion-item *ngIf="loading" text-center no-lines>
+      <ion-spinner text-center ></ion-spinner>
+    </ion-item>
+  </form>
+</ion-content>

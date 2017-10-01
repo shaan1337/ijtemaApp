@@ -69,7 +69,7 @@ export class PersonaldetailsPage {
     });
   }
 
-  private submitDetails(){
+  public submitDetails(){
     this.loading = true;
     setTimeout(()=>{
       var details = this.detailsForm.value;

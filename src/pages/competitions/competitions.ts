@@ -4,6 +4,7 @@ import { ProgrammeProvider } from '../../providers/programme/programme';
 import { Storage } from '@ionic/storage';
 import { ToastController } from 'ionic-angular';
 import { PersonaldetailsPage } from '../personaldetails/personaldetails';
+import { RegisterTeamPage } from '../register-team/register-team';
 
 /**
  * Generated class for the CompetitionsPage page.
@@ -61,23 +62,32 @@ export class CompetitionsPage {
     });
   }
 
-  public register(competitionTag: string){
+  public register(competition: any){
+    var competitionTag = competition.tag;
+    var teamSize = competition.teamsize;
+
     this.getPersonalDetails().then((details) => {
       if(!details){
-        this.openPersonalDetailsPage({competitionTag: competitionTag})        
+        this.openPersonalDetailsPage({competitionTag: competitionTag});      
       }
       else{
-        //TODO: call api here to register with details.token
-        this.setRegistrationState(competitionTag,'loading');
-        setTimeout(()=>{
-          this.setRegistrationState(competitionTag,'registered');
-          this.showToast('Successfully registered'); 
-        },1000);
+        if(!teamSize){
+          //TODO: call api here to register with details.token
+          this.setRegistrationState(competitionTag,'loading');
+          setTimeout(()=>{
+            this.setRegistrationState(competitionTag,'registered');
+            this.showToast('Successfully registered'); 
+          },1000);
+        }
+        else{
+          this.openRegisterTeamPage(competition);  
+        }
       }
     });
   }
 
-  public unregister(competitionTag: string){
+  public unregister(competition: any){
+    var competitionTag = competition.tag;
     this.setRegistrationState(competitionTag,'loading');
     setTimeout(()=>{
       //TODO: call api here to unregister with details.token
@@ -111,6 +121,23 @@ export class CompetitionsPage {
     if(!data) data = {};
     this.navCtrl.push(PersonaldetailsPage, data);    
   }
+
+  private openRegisterTeamPage(competition){
+    var params = {
+      competition: competition,
+      callback: () => {
+        //update the registration state
+        this.registrationState[competition.tag] = 'loading';
+        setTimeout(() =>{
+          this.getRegistrationState(competition.tag).then((res)=>{
+            this.registrationState[res.tag] = res.state;
+          });
+        },1000);
+      }
+    };
+
+    this.navCtrl.push(RegisterTeamPage, params);    
+  }  
 
   ionViewDidEnter(){
     if(this.goToProgrammeId){
