@@ -1,6 +1,6 @@
 {
   "name": "ijtemaApp",
-  "app_id": "",
+  "app_id": "cd21eb14",
   "type": "ionic-angular",
   "integrations": {
     "cordova": {}

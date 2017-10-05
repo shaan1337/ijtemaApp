@@ -66,8 +66,11 @@ export class RegisterTeamPage {
 
     //TODO: call api here to register with token
     setTimeout(()=>{
-      var details = this.membersForm.value;
-      this.storage.set(this.getRegistrationId(this.competition.tag),details);
+      var members = [];
+      for(var key in this.membersForm.value)
+        members.push(this.membersForm.value[key]);
+
+      this.storage.set(this.getRegistrationId(this.competition.tag),members);
       this.showToast('Successfully registered');
       this.callback();
       this.navCtrl.pop();

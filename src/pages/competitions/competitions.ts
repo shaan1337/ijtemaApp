@@ -24,6 +24,7 @@ export class CompetitionsPage {
   goToProgrammeId: any;  
   competitions: any[];
   registrationState: any = {};
+  teamMembers: any = {};
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private programmeProvider:ProgrammeProvider, private storage: Storage, private toastCtrl: ToastController) {
 
@@ -33,11 +34,17 @@ export class CompetitionsPage {
     for(var i=0;i<this.competitions.length;i++){
       var p = this.competitions[i];
 
-      if(p.competitions !== undefined)
-      for(var j=0;j<p.competitions.length;j++){
-        var tag = p.competitions[j].tag;
-        this.getRegistrationState(tag).then((res)=>{
-          this.registrationState[res.tag] = res.state;
+      if(p.competitions !== undefined){
+        p.competitions.forEach(competition => {
+          var tag = competition.tag;
+          
+          this.getRegistrationState(tag).then((res)=>{
+            this.registrationState[res.tag] = res.state;
+            if(competition.teamsize){ //teambased competition            
+              this.teamMembers[competition.tag] = res.value;
+            }
+          });
+
         });
       }
     }
@@ -57,8 +64,8 @@ export class CompetitionsPage {
     var id = this.getRegistrationId(competitionTag);
     var result = this.storage.get(id);
     return result.then((val) =>{
-      if(!val || val=='not-registered') return {tag: competitionTag, state: 'not-registered'};
-      else return {tag: competitionTag, state: 'registered'};
+      if(!val || val=='not-registered') return {tag: competitionTag, state: 'not-registered', value: val};
+      else return {tag: competitionTag, state: 'registered', value: val};
     });
   }
 
@@ -112,7 +119,7 @@ export class CompetitionsPage {
   }
 
   private getPersonalDetails(){
-    return this.storage.get('competitions-personal-details').then((val) => {
+    return this.storage.get('competitions-personal-details').then((val) => {  
       return val;
     });
   }
@@ -131,6 +138,9 @@ export class CompetitionsPage {
         setTimeout(() =>{
           this.getRegistrationState(competition.tag).then((res)=>{
             this.registrationState[res.tag] = res.state;
+            if(competition.teamsize){ //teambased competition            
+              this.teamMembers[competition.tag] = res.value;
+            }            
           });
         },1000);
       }
