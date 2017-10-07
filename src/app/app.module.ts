@@ -18,6 +18,7 @@ import { ProgrammeProvider } from '../providers/programme/programme';
 import { HttpModule } from '@angular/http';
 import { PersonaldetailsPage } from '../pages/personaldetails/personaldetails';
 import { RegisterTeamPage } from '../pages/register-team/register-team';
+import { RankTransformPipe } from '../pipes/rank-transform/rank-transform';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { RegisterTeamPage } from '../pages/register-team/register-team';
     NewsPage,
     SocialPage,
     PersonaldetailsPage,
-    RegisterTeamPage
+    RegisterTeamPage,
+    RankTransformPipe
   ],
   imports: [
     BrowserModule,

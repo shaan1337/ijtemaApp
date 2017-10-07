@@ -9,13 +9,22 @@
   <ion-navbar>
     <button ion-button menuToggle>
         <ion-icon name="menu"></ion-icon>
-    </button>
+    </button>              
     <ion-title>Leaderboard</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+  <ion-list>  
+    <ion-card *ngFor="let team of leaderboard">
+      <ion-item>
+        <p> {{ team.rank | rankTransform }} </p>          
+        <h1>{{ team.name }}</h1>
+        <h2 item-end style="font-size:1.2em">{{ team.points }} pts</h2>
+      </ion-item>
+    </ion-card>    
+  </ion-list>
 
 </ion-content>
