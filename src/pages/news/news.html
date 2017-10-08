@@ -17,5 +17,24 @@
 
 
 <ion-content padding>
-
+    <ion-card *ngFor="let newsItem of news">
+      <ion-item>
+        <h2 style="font-weight:bold">{{ newsItem.author }}</h2>
+        <p>{{ newsItem.date }}</p>
+      </ion-item>
+    
+      <ion-card-content>
+        <p>
+            {{ newsItem.message }}
+        </p>
+      </ion-card-content>
+    
+      <ion-row>
+        <ion-item>
+          <ion-note item-end>
+            {{ newsItem.timeElapsed }}
+          </ion-note>
+        </ion-item>
+      </ion-row>
+    </ion-card>
 </ion-content>
