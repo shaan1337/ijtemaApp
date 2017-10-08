@@ -31,7 +31,7 @@ export class MyApp {
       { title: 'Competitions', component: CompetitionsPage, icon: 'trophy' },
       { title: 'Leaderboard', component: LeaderboardPage, icon: 'podium' },
       { title: 'News', component: NewsPage, icon: 'information-circle' },      
-      { title: 'Social Networks', component: SocialPage, icon: 'logo-twitter' }
+      { title: 'Social Networks', component: SocialPage, icon: 'thumbs-up' }
     ];
 
   }
