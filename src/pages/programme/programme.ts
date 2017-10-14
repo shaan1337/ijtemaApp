@@ -21,24 +21,38 @@ export class ProgrammePage {
   pageLoaded: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private programmeProvider: ProgrammeProvider) {
-    this.programmes = this.programmeProvider.getProgrammes();    
   }
 
-  scrollToNextProgramme(){
-    var nextProgramme = this.programmeProvider.getNextProgrammeId();    
-    var programme = document.getElementById('programme-'+nextProgramme);
-    this.content.scrollTo(0,programme.offsetTop,500);
+  scrollToNextProgramme(){    
+    var nextProgramme = this.programmeProvider.getNextProgrammeId();
+    if(nextProgramme==-1) return; 
+    setTimeout(()=>{
+      var programme = document.getElementById('programme-'+nextProgramme);    
+      this.content.scrollTo(0,programme.offsetTop,500);
+    },100);
   }
 
   openCompetitionsPage(programmeId: number){
     this.navCtrl.push(CompetitionsPage, {goToProgrammeId: programmeId});
   }
 
-  ionViewDidEnter() {
-      if(!this.pageLoaded)
-        this.scrollToNextProgramme();
+  loadProgrammes(){
+    this.programmeProvider.getProgrammes()        
+    .then((programmes) => {
+      this.programmes = programmes;
+      this.scrollToNextProgramme();
+    });    
+  }
 
-      this.pageLoaded = true;
+  ionViewDidEnter() {
+    if(!this.pageLoaded){
+      this.loadProgrammes(); //first time from local storage      
+      setTimeout(()=>{
+        this.loadProgrammes(); //second time from api if data has been updated
+      }, 3000);
+    }
+
+    this.pageLoaded = true;
   }
 
 }

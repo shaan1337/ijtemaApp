@@ -19,6 +19,7 @@ import { HttpModule } from '@angular/http';
 import { PersonaldetailsPage } from '../pages/personaldetails/personaldetails';
 import { RegisterTeamPage } from '../pages/register-team/register-team';
 import { RankTransformPipe } from '../pipes/rank-transform/rank-transform';
+import { ApiProvider } from '../providers/api/api';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { RankTransformPipe } from '../pipes/rank-transform/rank-transform';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    ProgrammeProvider
+    ProgrammeProvider,
+    ApiProvider
   ]
 })
 export class AppModule {}

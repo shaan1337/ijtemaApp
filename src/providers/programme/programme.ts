@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
+import { ApiProvider } from '../../providers/api/api';
+import { Storage } from '@ionic/storage';
 
 /*
   Generated class for the ProgrammeProvider provider.
@@ -14,53 +16,30 @@ export class ProgrammeProvider {
   //if an item does not have an 'endTime', the next item below it should have a 'time'
   //'date' format: 'yyyy-mm-dd'
   //'time' format: 'hh:mm'
-  programmes = [ 
-    { type: 'day', date: '2017-09-23', title:'Friday 28th October'},
-    { type: 'program', time: '10:00', title: 'Jummah Prayer with Asr' },
-    { type: 'program', time: '13:45', title: 'Hoisting of Flag & Du\'a' },
-    { type: 'competition', time: '14:00', title: 'Fun Games',
-      competitions: [
-        {name: 'Domino (Preliminary Round)', tag: 'domino', teamsize: 2},
-        {name: 'Carrom', tag: 'carrom'},
-        {name: 'Dart', tag: 'dart'},
-        {name: 'Foot for Fun', tag: 'foot-for-fun'}
-      ]},
-    { type: 'program', time: '15:00', title: 'Tea' },
-    { type: 'program', time: '17:30', title: 'Dinner' },
-    { type: 'program', time: '18:30', title: 'Maghrib & Isha Prayers' },
-    { type: 'program', time: '18:50', title: 'Tilawat Qur\'an' },
-    { type: 'program', time: '19:00', title: 'Ahad' },
-    { type: 'competition', time: '19:00', title: 'Competitions',
-      competitions: [
-        {name: 'Nazam', tag: 'nazam', link: {text:'View rules',url:'http://ijtema.khuddam.mu/content/LiteraryCompetitions.pdf'}},
-        {name: 'Speech', tag: 'speech', link: {text:'View rules',url:'http://ijtema.khuddam.mu/content/LiteraryCompetitions.pdf'}},
-        {name: 'Foot-A-3', tag: 'foot-a-3', teamsize: 3},
-        {name: 'Iron Man', tag: 'iron-man'},
-        {name: 'PlayStation', tag: 'playstation'}
-    ]},   
-    { type: 'program', time: '19:00', endTime: '21:00', title: 'Refreshments' },
-    { type: 'day', date: '2017-09-24', title:'Saturday 29th October'},    
-    { type: 'competition', time: '19:00', title: 'Competitions - Open to All',
-      competitions: [
-        {name: 'Domino (Atfaal)', tag: 'domino-atfaal'}
-      ]
-    },
-    { type: 'program', time: '19:00', title: 'Ahad' },
-    { type: 'program',  time: '19:00', endTime: '21:00', title: 'Refreshments' }    
-  ];
+  programmes = [];
 
-  constructor(public http: Http) {
-    this.setIds();
+  constructor(public http: Http, public apiProvider: ApiProvider, public storage: Storage) {  
+    this.http.get(this.apiProvider.getAPIURL() + '/programme').map(res => res.json()).subscribe(data => {
+      storage.set('programme',JSON.stringify(data));
+    });    
+  }
+
+  public getProgrammes(){
+    return this.storage.get('programme')
+    .then((val)=>{
+      if(!val) this.programmes = [];
+      else this.programmes = JSON.parse(val);
+      
+      this.setIds();
+
+      return this.programmes;
+    });
   }
 
   private setIds(){
     for(var i=0;i<this.programmes.length;i++){
       this.programmes[i]['id'] = i;
     }
-  }
-
-  public getProgrammes(){
-    return this.programmes;
   }
 
   public getCompetitions(){
@@ -91,7 +70,7 @@ export class ProgrammeProvider {
   }
 
   public getNextProgrammeId(){
-    return this.getNext(this.getProgrammes());
+    return this.getNext(this.programmes);
   }
 
   public getNextCompetitionId(){
@@ -99,6 +78,8 @@ export class ProgrammeProvider {
   }
 
   private getNext(programmes: any[]){
+    if(programmes.length==0) return -1;
+
     var now = Date.parse((new Date()).toISOString());
     var date;
     var nextProgramme = -1;
