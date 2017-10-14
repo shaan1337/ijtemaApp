@@ -36,21 +36,20 @@ export class ProgrammePage {
     this.navCtrl.push(CompetitionsPage, {goToProgrammeId: programmeId});
   }
 
-  loadProgrammes(){
+  loadProgrammes(scrollToNext){
     this.programmeProvider.getProgrammes()        
     .then((programmes) => {
       this.programmes = programmes;
-      this.scrollToNextProgramme();
+      if(scrollToNext)
+        this.scrollToNextProgramme();
     });    
   }
 
   ionViewDidEnter() {
-    if(!this.pageLoaded){
-      this.loadProgrammes(); //first time from local storage      
-      setTimeout(()=>{
-        this.loadProgrammes(); //second time from api if data has been updated
-      }, 3000);
-    }
+    this.loadProgrammes(!this.pageLoaded); //first time from local storage      
+    setTimeout(()=>{
+      this.loadProgrammes(false); //second time if data has been updated from api
+    }, 3000);
 
     this.pageLoaded = true;
   }
