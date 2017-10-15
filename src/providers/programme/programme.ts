@@ -19,14 +19,18 @@ export class ProgrammeProvider {
   programmes = [];
 
   constructor(public http: Http, public apiProvider: ApiProvider, public storage: Storage) {  
-    this.http.get(this.apiProvider.getAPIURL() + '/programme').map(res => res.json()).subscribe(data => {
-      storage.set('programme',JSON.stringify(data));
-    });    
   }
 
-  public getProgrammes(){
+  public getProgrammes(loadFromWeb, callback){
     return this.storage.get('programme')
     .then((val)=>{
+      if(loadFromWeb){
+        this.http.get(this.apiProvider.getAPIURL() + '/programme').map(res => res.json()).subscribe(data => {
+          this.storage.set('programme',JSON.stringify(data));
+          callback();
+        });
+      }
+
       if(!val) this.programmes = [];
       else this.programmes = JSON.parse(val);
       

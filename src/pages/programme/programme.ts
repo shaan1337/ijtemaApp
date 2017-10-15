@@ -36,8 +36,12 @@ export class ProgrammePage {
     this.navCtrl.push(CompetitionsPage, {goToProgrammeId: programmeId});
   }
 
-  loadProgrammes(scrollToNext){
-    this.programmeProvider.getProgrammes()        
+  loadProgrammes(loadFromWeb, scrollToNext){
+    this.programmeProvider.getProgrammes(
+    loadFromWeb,
+    ()=>{
+      this.loadProgrammes(false, false);
+    })
     .then((programmes) => {
       this.programmes = programmes;
       if(scrollToNext)
@@ -46,11 +50,7 @@ export class ProgrammePage {
   }
 
   ionViewDidEnter() {
-    this.loadProgrammes(!this.pageLoaded); //first time from local storage      
-    setTimeout(()=>{
-      this.loadProgrammes(false); //second time if data has been updated from api
-    }, 3000);
-
+    this.loadProgrammes(true, !this.pageLoaded);
     this.pageLoaded = true;
   }
 
