@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Storage } from '@ionic/storage';
+import { Http } from '@angular/http';
+import 'rxjs/add/operator/toPromise';
+import { ApiProvider } from '../../providers/api/api';
 /**
  * Generated class for the PersonaldetailsPage page.
  *
@@ -21,7 +24,7 @@ export class PersonaldetailsPage {
   majlisWithHalqa: any = {'quatre-bornes': true,'rose-hill': true,'trefles': true}
   storageTag: any = 'competitions-personal-details';
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private formBuilder: FormBuilder, private storage: Storage, private toastCtrl: ToastController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public formBuilder: FormBuilder, public storage: Storage, public toastCtrl: ToastController, public apiProvider: ApiProvider, public http: Http) {
     this.detailsForm = this.formBuilder.group({
       name: ['', Validators.compose([Validators.required,Validators.pattern("^[A-Za-z ,.'-]+$")])],
       mobile: ['', Validators.compose([Validators.required,Validators.minLength(8),Validators.maxLength(8),Validators.pattern("5[0-9]{7}")])],
@@ -78,42 +81,39 @@ export class PersonaldetailsPage {
       .then((val)=>{
         if(!val) return undefined;
         else{
-          var obj = JSON.parse(val);
-          return obj.token;
+          return JSON.parse(val);
         }
       })
-      .then((token) =>{
-        details.token = token;
-
-        //TODO: call api here, which will return a token
-        if(!token) token = this.generateRandomToken();
-        details.token = token;
-        return details;
+      .then((data) =>{
+        if(!data){
+          return this.http.post(this.apiProvider.getAPIURL()+'/personaldetails', details).toPromise();
+        }
+        else{
+          var patches = [];
+          for(var key in details){
+            patches.push({op:'replace',path:'/'+key,value:details[key]});
+          }
+          return this.http.patch(this.apiProvider.getAPIURL()+'/personaldetails'+'/'+data._id+'/'+data.token, patches).toPromise();          
+        }
       })
-      .then((savedDetails) =>{
-        this.storage.set(this.storageTag, JSON.stringify(savedDetails));
-        this.showToast('Successfully saved');
+      .then(
+      (res) =>{
+        this.storage.set(this.storageTag, res['_body']);
+        this.showToast('Successfully saved', 1000);
         this.navCtrl.pop();
+      })
+      .catch((err)=>{
+        this.showToast('An error has occured. Please check your internet connection.', 5000);
+        this.loading = false;
       });
 
     },1000);
   }
 
-  private generateRandomToken(){
-    var result = '';
-    var charset = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    for(var i=0;i<32;i++){
-      var pos = Math.floor((Math.random() * (charset.length - 1)));
-      result += charset[pos];
-    }
-
-    return result;
-  }
-
-  private showToast(message){
+  private showToast(message, duration){
     const toast = this.toastCtrl.create({
       message: message,
-      duration: 1000,
+      duration: duration,
       position: 'bottom'
     });
 
