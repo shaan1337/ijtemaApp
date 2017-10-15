@@ -20,8 +20,8 @@
   <ion-card *ngFor="let team of leaderboard">
     <ion-item>
       <p> {{ team.rank | rankTransform }} </p>          
-      <h1 ion-text color="primary">{{ team.name }}</h1>
-      <h2 item-end style="font-size:1.2em; font-weight: bold">{{ team.points }} pts</h2>
+      <h1 ion-text color="primary">{{ team.team }}</h1>
+      <h2 item-end style="font-size:1.2em; font-weight: bold">{{ team.score }} pts</h2>
     </ion-item>
   </ion-card>
 

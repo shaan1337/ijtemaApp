@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
+import { Http } from '@angular/http';
+import { ApiProvider } from '../../providers/api/api';
 
 /**
  * Generated class for the LeaderboardPage page.
@@ -14,14 +17,37 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'leaderboard.html',
 })
 export class LeaderboardPage {
-  leaderboard: any[] = [
-    {name: 'Quatre-Bornes', points: 115, rank: 1},
-    {name: 'Rose-Hill', points: 110, rank: 2},
-    {name: 'Trefles', points: 95, rank: 3},
-    {name: 'Stanley', points: 90, rank: 4}
-  ];
+  leaderboard: any[] = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public http: Http, public apiProvider: ApiProvider) {
   }
 
+  loadLeaderboard(loadFromWeb, callback){
+    return this.storage.get('leaderboard')
+    .then((val)=>{
+      if(loadFromWeb){
+        this.http.get(this.apiProvider.getAPIURL() + '/leaderboard').map(res => res.json()).subscribe(data => {
+          this.storage.set('leaderboard',JSON.stringify(data));
+          if(callback)      
+            setTimeout(callback, 1000);          
+        });
+      }
+
+      if(!val) this.leaderboard = [];
+      else this.leaderboard = JSON.parse(val);      
+      return this.leaderboard;
+    });    
+  }
+
+  ionViewDidEnter() {
+    this.loadLeaderboard(true, () =>{
+      this.loadLeaderboard(false,false);
+    });
+
+    setInterval(()=>{
+      this.loadLeaderboard(true, () =>{
+        this.loadLeaderboard(false,false);
+      });
+    },20*1000);
+  }
 }
