@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Storage } from '@ionic/storage';
+import { Http } from '@angular/http';
+import { ApiProvider } from '../../providers/api/api';
 
 /**
  * Generated class for the RegisterTeamPage page.
@@ -18,12 +20,14 @@ import { Storage } from '@ionic/storage';
 export class RegisterTeamPage {
   loading: boolean = false;
   competition: any;
+  token: string;
   callback: any;
   membersForm: FormGroup;
   members: any = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private formBuilder: FormBuilder, private storage: Storage, private toastCtrl: ToastController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private formBuilder: FormBuilder, private storage: Storage, private toastCtrl: ToastController, private apiProvider: ApiProvider, private http: Http) {
     this.competition = navParams.data.competition;
+    this.token = navParams.data.token;
     this.callback = navParams.data.callback;
 
     var formControls = {};
@@ -64,24 +68,42 @@ export class RegisterTeamPage {
   public registerTeam(){
     this.loading = true;
 
-    //TODO: call api here to register with token
-    setTimeout(()=>{
-      var members = [];
-      for(var key in this.membersForm.value)
-        members.push(this.membersForm.value[key]);
+    var teamMembersString = "Team: ";
 
-      this.storage.set(this.getRegistrationId(this.competition.tag),members);
-      this.showToast('Successfully registered');
-      this.callback();
-      this.navCtrl.pop();
-    },1000);
-    
+    var members = [];
+    for(var key in this.membersForm.value){
+      var member = this.membersForm.value[key];
+      if(members.length > 0) teamMembersString += ',';
+      teamMembersString += member;
+      members.push(member);
+    }
+
+    var competition = {
+      tag: this.competition.tag,
+      comment: teamMembersString,
+      members: JSON.stringify(members)
+    };
+
+    this.http.post(this.apiProvider.getAPIURL()+'/registrations/'+this.token, competition).toPromise()
+    .then((res)=>{
+      setTimeout(()=>{
+        this.setRegistrationState(this.competition.tag,res['_body']);
+        this.showToast('Successfully registered',1000);
+        this.callback();
+        this.navCtrl.pop();       
+      }, 1000);
+    })
+    .catch((err)=>{
+      setTimeout(()=>{
+        this.showToast('An error has occured. Please check your internet connection.', 5000);              
+      }, 1000);       
+    });    
   }
 
-  private showToast(message){
+  private showToast(message, duration){
     const toast = this.toastCtrl.create({
       message: message,
-      duration: 1000,
+      duration: duration,
       position: 'bottom'
     });
 
@@ -92,6 +114,11 @@ export class RegisterTeamPage {
     return 'competition-'+competitionTag;
   }  
 
+
+  private setRegistrationState(competitionTag: string, value: string){
+    this.storage.set(this.getRegistrationId(competitionTag),value);
+  }
+  
   ionViewDidLoad() {
   }
 

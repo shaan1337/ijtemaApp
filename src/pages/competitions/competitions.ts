@@ -5,6 +5,8 @@ import { Storage } from '@ionic/storage';
 import { ToastController } from 'ionic-angular';
 import { PersonaldetailsPage } from '../personaldetails/personaldetails';
 import { RegisterTeamPage } from '../register-team/register-team';
+import { ApiProvider } from '../../providers/api/api';
+import { Http } from '@angular/http';
 
 /**
  * Generated class for the CompetitionsPage page.
@@ -26,7 +28,7 @@ export class CompetitionsPage {
   registrationState: any = {};
   teamMembers: any = {};
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private programmeProvider:ProgrammeProvider, private storage: Storage, private toastCtrl: ToastController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public programmeProvider:ProgrammeProvider, public storage: Storage, public toastCtrl: ToastController, public apiProvider:ApiProvider, public http: Http) {
 
     this.goToProgrammeId = navParams.get("goToProgrammeId");
 
@@ -40,8 +42,12 @@ export class CompetitionsPage {
           
           this.getRegistrationState(tag).then((res)=>{
             this.registrationState[res.tag] = res.state;
-            if(competition.teamsize){ //teambased competition            
-              this.teamMembers[competition.tag] = res.value;
+            if(competition.teamsize){ //teambased competition
+              if(res.value){
+                var val = JSON.parse(res.value);
+                var members = JSON.parse(val.members);
+                this.teamMembers[competition.tag] = members;
+              }
             }
           });
 
@@ -56,38 +62,68 @@ export class CompetitionsPage {
   }
 
   private setRegistrationState(competitionTag: string, value: string){
-    this.storage.set(this.getRegistrationId(competitionTag),value);
-    this.registrationState[competitionTag] = value;
+    if(value=='loading'){
+      this.registrationState[competitionTag] = value;
+    }
+    else if(value == 'not-registered'){
+      this.storage.remove(this.getRegistrationId(competitionTag));
+      this.registrationState[competitionTag] = value;      
+    }
+    else{
+      this.storage.set(this.getRegistrationId(competitionTag),value)
+      .then(()=>{
+        return this.getRegistrationState(competitionTag);
+      })      
+      .then((res)=>{
+        this.registrationState[res.tag] = res.state;      
+      });
+    }
   }
 
   private getRegistrationState(competitionTag: string){
     var id = this.getRegistrationId(competitionTag);
     var result = this.storage.get(id);
     return result.then((val) =>{
-      if(!val || val=='not-registered') return {tag: competitionTag, state: 'not-registered', value: val};
+      if(!val) return {tag: competitionTag, state: 'not-registered', value: val};
       else return {tag: competitionTag, state: 'registered', value: val};
     });
   }
 
   public register(competition: any){
+    var curCompetition = competition;
     var competitionTag = competition.tag;
     var teamSize = competition.teamsize;
-
+    
     this.getPersonalDetails().then((details) => {
       if(!details){
         this.openPersonalDetailsPage({competitionTag: competitionTag});      
       }
       else{
+        var token = details.token;
         if(!teamSize){
-          //TODO: call api here to register with details.token
           this.setRegistrationState(competitionTag,'loading');
-          setTimeout(()=>{
-            this.setRegistrationState(competitionTag,'registered');
-            this.showToast('Successfully registered'); 
-          },1000);
+          var competition = {
+            tag: competitionTag,
+            comment:"",
+            members: JSON.stringify([])
+          };
+
+          this.http.post(this.apiProvider.getAPIURL()+'/registrations/'+token, competition).toPromise()
+          .then((res)=>{
+            setTimeout(()=>{
+              this.setRegistrationState(competitionTag,res['_body']);
+              this.showToast('Successfully registered',1000);              
+            }, 1000);
+          })
+          .catch((err)=>{
+            setTimeout(()=>{
+              this.setRegistrationState(competitionTag,'not-registered');
+              this.showToast('An error has occured. Please check your internet connection.', 5000);              
+            }, 1000);       
+          });
         }
         else{
-          this.openRegisterTeamPage(competition);  
+          this.openRegisterTeamPage(curCompetition, token);  
         }
       }
     });
@@ -96,11 +132,40 @@ export class CompetitionsPage {
   public unregister(competition: any){
     var competitionTag = competition.tag;
     this.setRegistrationState(competitionTag,'loading');
-    setTimeout(()=>{
-      //TODO: call api here to unregister with details.token
-      this.setRegistrationState(competitionTag,'not-registered');
-      this.showToast('Successfully unregistered'); 
-    },1000);
+
+    var id = -1;
+    var token = '';
+
+    this.getPersonalDetails().then((details) => {
+      if(!details || !details.token) return;
+      token = details.token;      
+    })
+    .then(()=>{
+      return this.getRegistrationState(competitionTag);
+    })    
+    .then((state)=>{
+      var value = JSON.parse(state.value);
+      id = value['_id'];
+    })
+    .then(()=>{
+      return this.http.delete(this.apiProvider.getAPIURL()+'/registrations'+'/'+id+'/'+token, competition).toPromise();      
+    })    
+    .then((res)=>{
+      setTimeout(()=>{
+        this.setRegistrationState(competitionTag,'not-registered');          
+        this.showToast('Successfully unregistered',1000);              
+      }, 1000);
+    })
+    .catch((err)=>{
+      setTimeout(()=>{
+        this.getRegistrationState(competition)
+        .then((res)=>{
+          this.setRegistrationState(res.tag,res.value);
+          this.showToast('An error has occured. Please check your internet connection.', 5000); 
+        });
+      }, 1000);       
+    });
+  
   }
 
   private scrollToProgramme(programmeId){
@@ -108,10 +173,10 @@ export class CompetitionsPage {
     this.content.scrollTo(0,programme.offsetTop,500);
   }
 
-  private showToast(message){
+  private showToast(message,duration){
     const toast = this.toastCtrl.create({
       message: message,
-      duration: 1000,
+      duration: duration,
       position: 'bottom'
     });
 
@@ -120,7 +185,10 @@ export class CompetitionsPage {
 
   private getPersonalDetails(){
     return this.storage.get('competitions-personal-details').then((val) => {  
-      return val;
+      if(!val)
+        return val;
+      else
+        return JSON.parse(val);
     });
   }
 
@@ -129,17 +197,22 @@ export class CompetitionsPage {
     this.navCtrl.push(PersonaldetailsPage, data);    
   }
 
-  private openRegisterTeamPage(competition){
+  private openRegisterTeamPage(competition, token){
     var params = {
       competition: competition,
+      token: token,
       callback: () => {
         //update the registration state
         this.registrationState[competition.tag] = 'loading';
         setTimeout(() =>{
           this.getRegistrationState(competition.tag).then((res)=>{
             this.registrationState[res.tag] = res.state;
-            if(competition.teamsize){ //teambased competition            
-              this.teamMembers[competition.tag] = res.value;
+            if(competition.teamsize){ //teambased competition
+              if(res.value){      
+                var val = JSON.parse(res.value);
+                var members = JSON.parse(val.members);
+                this.teamMembers[competition.tag] = members;
+              }
             }            
           });
         },1000);
