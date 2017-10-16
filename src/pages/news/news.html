@@ -17,6 +17,10 @@
 
 
 <ion-content padding>
+    <ion-item text-center *ngIf="news.length==0" style="height: 100%; vertical-align: middle;">
+        <p ion-text color="primary" style="font-style: italic; font-size: 1.4em">No data yet, stay tuned!</p>
+    </ion-item>
+
     <ion-card *ngFor="let newsItem of news">
       <ion-item>
         <h2 style="font-weight:bold">{{ newsItem.author }}</h2>

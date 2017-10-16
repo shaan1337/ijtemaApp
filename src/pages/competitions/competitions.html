@@ -22,6 +22,9 @@
 
 
 <ion-content>
+    <ion-item text-center *ngIf="competitions.length==0" style="height: 100%; vertical-align: middle;">
+        <p ion-text color="primary" style="font-style: italic; font-size: 1.4em">No data yet, stay tuned!</p>
+    </ion-item>
     <ion-list *ngFor="let p of competitions">          
       <ion-item-divider *ngIf="p.type=='day'" color="primary" id="{{ 'programme-competition-' + p.id }}">
           {{ p.title }}

@@ -17,6 +17,10 @@
 
 
 <ion-content>
+  <ion-item text-center *ngIf="leaderboard.length==0" style="height: 100%; vertical-align: middle;">
+      <p ion-text color="primary" style="font-style: italic; font-size: 1.4em">No data yet, stay tuned!</p>
+  </ion-item>
+
   <ion-card *ngFor="let team of leaderboard">
     <ion-item>
       <p> {{ team.rank | rankTransform }} </p>          

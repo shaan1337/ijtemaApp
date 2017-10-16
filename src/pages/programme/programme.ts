@@ -17,7 +17,7 @@ import { CompetitionsPage } from '../competitions/competitions';
 })
 export class ProgrammePage {
   @ViewChild(Content) content: Content;
-  programmes: any[];
+  programmes: any[] = [];
   pageLoaded: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private programmeProvider: ProgrammeProvider) {

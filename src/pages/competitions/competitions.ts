@@ -24,7 +24,7 @@ export class CompetitionsPage {
   @ViewChild(Content) content: Content;
   
   goToProgrammeId: any;  
-  competitions: any[];
+  competitions: any[] = [];
   registrationState: any = {};
   teamMembers: any = {};
 
