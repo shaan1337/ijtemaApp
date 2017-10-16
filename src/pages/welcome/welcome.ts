@@ -25,17 +25,17 @@ export class WelcomePage {
     {
       title: "Stay tuned",
       description: "View the <b>Program</b> and stay tuned throughout the Ijtema by browsing the <b>News</b> section",
-      image: "assets/img/welcome-slide-1.png",
+      image: "assets/img/programme.png",
     },
     {
       title: "Register for Competitions",
       description: "Book your place for <b>Literary</b> or <b>Sports</b> competitions right from the app",
-      image: "assets/img/welcome-slide-1.png",
+      image: "assets/img/competitions.png",
     },
     {
-      title: "Be Social!",
+      title: "Like!",
       description: "Use hashtag <b>#ijtemamu</b> to share your amazing photos to <b>Instagram</b> or <b>Twitter</b>",
-      image: "assets/img/welcome-slide-1.png"
+      image: "assets/img/social.png"
     }
   ];
 
