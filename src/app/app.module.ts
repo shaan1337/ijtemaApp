@@ -20,6 +20,7 @@ import { PersonaldetailsPage } from '../pages/personaldetails/personaldetails';
 import { RegisterTeamPage } from '../pages/register-team/register-team';
 import { RankTransformPipe } from '../pipes/rank-transform/rank-transform';
 import { ApiProvider } from '../providers/api/api';
+import { Firebase } from '@ionic-native/firebase';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { ApiProvider } from '../providers/api/api';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ProgrammeProvider,
-    ApiProvider
+    ApiProvider,
+    Firebase
   ]
 })
 export class AppModule {}

@@ -11,6 +11,9 @@ import { NewsPage } from '../pages/news/news';
 import { SocialPage } from '../pages/social/social';
 
 import { Storage } from '@ionic/storage';
+import { Firebase } from '@ionic-native/firebase';
+import { Http } from '@angular/http';
+import { ApiProvider } from '../providers/api/api';
 
 @Component({
   templateUrl: 'app.html'
@@ -22,7 +25,7 @@ export class MyApp {
 
   pages: Array<{title: string, component: any, icon: string}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, private firebase: Firebase, private apiProvider: ApiProvider, private http: Http) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -43,6 +46,8 @@ export class MyApp {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
+      this.initializeFirebase();
+
       this.storage.get('welcomeCompleted').then((val) => {
         if(val==undefined){
           this.openWelcomePage();          
@@ -61,5 +66,20 @@ export class MyApp {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
+  }
+
+  initializeFirebase(){
+    if(this.platform.is('cordova')){
+      this.firebase.getToken()
+      .then(token => {
+        return this.http.post(this.apiProvider.getAPIURL()+'/firebase-registrations/', {token: token}).toPromise()        
+      })
+      .catch(error => console.error('Error getting token', error));
+    
+      this.firebase.onTokenRefresh()
+      .subscribe((token: string) => {
+        this.http.post(this.apiProvider.getAPIURL()+'/firebase-registrations/', {token: token}).toPromise();        
+      });
+    }
   }
 }
