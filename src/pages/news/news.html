@@ -31,6 +31,7 @@
         <p>
             {{ newsItem.message }}
         </p>
+        <p *ngIf="newsItem.link"><a [href]="newsItem.link">{{ newsItem.linkName?newsItem.linkName:newsItem.link }}</a></p>
       </ion-card-content>
     
       <ion-row>

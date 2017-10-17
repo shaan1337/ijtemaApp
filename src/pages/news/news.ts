@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Http } from '@angular/http';
+import { ApiProvider } from '../../providers/api/api';
+import { Storage } from '@ionic/storage';
 
 /**
  * Generated class for the NewsPage page.
@@ -15,16 +18,37 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class NewsPage {
   news:any[] = [];
-  /*[
-    {author:'John Smith 1', date: 'October 5, 2017', message:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', timeElapsed: '3 days ago'},
-    {author:'John Smith 2', date: 'October 6, 2017', message:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', timeElapsed: '1 day ago'},
-    {author:'John Smith 3', date: 'October 8, 2017', message:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', timeElapsed: '11h ago'}        
-  ]*/
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public apiProvider:ApiProvider,public http: Http) {
   }
 
-  ionViewDidLoad() {
+  loadNews(loadFromWeb, callback){
+    return this.storage.get('news')
+    .then((val)=>{
+      if(loadFromWeb){
+        this.http.get(this.apiProvider.getAPIURL() + '/news').map(res => res.json()).subscribe(data => {
+          this.storage.set('news',JSON.stringify(data));
+          if(callback)      
+            setTimeout(callback, 1000);          
+        });
+      }
+
+      if(!val) this.news = [];
+      else this.news = JSON.parse(val);      
+      return this.news;
+    });    
+  }
+
+  ionViewDidEnter() {
+    this.loadNews(true, () =>{
+      this.loadNews(false,false);
+    });
+
+    setInterval(()=>{
+      this.loadNews(true, () =>{
+        this.loadNews(false,false);
+      });
+    },20*1000);
   }
 
 }
