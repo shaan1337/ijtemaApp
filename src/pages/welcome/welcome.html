@@ -18,16 +18,16 @@
       <p [innerHTML]="slide.description"></p>
     </ion-slide>
     <ion-slide>
-      <ion-toolbar>
-      </ion-toolbar>
-      <h2 class="slide-title">Ready?</h2>
-      <p>
-        <img src="assets/img/getstarted.png" class="slide-image">
-      </p>
-      <button ion-button large clear icon-end color="primary" (click)="openMainMenu(true)">
-        Let's get started!
-        <ion-icon name="arrow-forward"></ion-icon>
-      </button>
+      <div>
+        <h2 class="slide-title">Ready?</h2>      
+      </div>
+      <img src="assets/img/getstarted.png" class="slide-image">
+      <div>
+        <button ion-button large clear icon-end color="primary" (click)="openMainMenu(true)">
+          Let's get started!
+          <ion-icon name="arrow-forward"></ion-icon>
+        </button>
+      </div>
     </ion-slide>
   </ion-slides>
 </ion-content>
