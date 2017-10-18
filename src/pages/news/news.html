@@ -16,7 +16,7 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content #content padding>
     <ion-item text-center *ngIf="news.length==0" style="height: 100%; vertical-align: middle;">
         <p ion-text color="primary" style="font-style: italic; font-size: 1.4em">No data yet, stay tuned!</p>
     </ion-item>
@@ -37,9 +37,14 @@
       <ion-row>
         <ion-item>
           <ion-note item-end>
-            {{ newsItem.timeElapsed }}
+            {{ newsItem.dateUTC | timeElapsed }}
           </ion-note>
         </ion-item>
       </ion-row>
     </ion-card>
+    <ion-infinite-scroll (ionInfinite)="loadMore($event)" threshold="100px">
+      <ion-infinite-scroll-content
+        loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>    
 </ion-content>

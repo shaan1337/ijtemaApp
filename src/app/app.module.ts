@@ -21,6 +21,7 @@ import { RegisterTeamPage } from '../pages/register-team/register-team';
 import { RankTransformPipe } from '../pipes/rank-transform/rank-transform';
 import { ApiProvider } from '../providers/api/api';
 import { Firebase } from '@ionic-native/firebase';
+import { TimeElapsedPipe } from '../pipes/time-elapsed/time-elapsed';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { Firebase } from '@ionic-native/firebase';
     SocialPage,
     PersonaldetailsPage,
     RegisterTeamPage,
-    RankTransformPipe
+    RankTransformPipe,
+    TimeElapsedPipe
   ],
   imports: [
     BrowserModule,
