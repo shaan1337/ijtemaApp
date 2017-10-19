@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, InfiniteScroll, Content } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, InfiniteScroll } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { ApiProvider } from '../../providers/api/api';
 import { Storage } from '@ionic/storage';
