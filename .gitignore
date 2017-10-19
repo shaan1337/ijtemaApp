@@ -35,3 +35,4 @@ Thumbs.db
 UserInterfaceState.xcuserstate
 GoogleService-Info.plist
 google-services.json
+src/providers/api/apiconfig.ts
