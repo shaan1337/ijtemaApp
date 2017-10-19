@@ -46,6 +46,7 @@ export class MyApp {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
+      this.saveVersion();
       this.initializeFirebase();
 
       this.storage.get('welcomeCompleted').then((val) => {
@@ -56,6 +57,11 @@ export class MyApp {
 
 
     });
+  }
+
+  saveVersion(){
+    //save version to manage app updates
+    this.storage.set('app-version','2017.01.01');
   }
 
   openWelcomePage(){
