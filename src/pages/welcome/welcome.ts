@@ -20,7 +20,7 @@ export class WelcomePage {
     {
       title: "Assalamu alaikum wa rahmatullah!",
       description: "Welcome to the official app for the <br><b>Majlis Khuddam-ul-Ahmadiyya Mauritius National Ijtema 2017</b>!",
-      image: "assets/img/logo.svg",
+      image: "assets/img/logo.png",
     },
     {
       title: "Stay tuned",
