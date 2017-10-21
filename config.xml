@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.mkamauritius.nationalijtema" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.mkamauritius.ijtema" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>National Ijtema Mauritius 2017</name>
     <description>MKA Mauritius National Ijtema - 27,28,29 October 2017</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
