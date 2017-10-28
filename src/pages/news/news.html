@@ -29,6 +29,7 @@
 
       <ion-card-content>
         <h2 style="font-weight:bold">{{ newsItem.subject }}</h2>
+        <h2 style="white-space: pre">{{ newsItem.message }}</h2>        
         <p *ngIf="newsItem.link"><a [href]="newsItem.link">{{ newsItem.linkName?newsItem.linkName:newsItem.link }}</a></p>
       </ion-card-content>
 
