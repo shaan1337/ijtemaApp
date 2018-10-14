@@ -44,10 +44,18 @@ export class LeaderboardPage {
       this.loadLeaderboard(false,false);
     });
 
-    setInterval(()=>{
-      this.loadLeaderboard(true, () =>{
-        this.loadLeaderboard(false,false);
+    var context = this;
+    var refreshLeaderboard = function(){
+      if(context.navCtrl.getActive().component != LeaderboardPage){
+        return;
+      }
+
+      context.loadLeaderboard(true, () =>{
+        context.loadLeaderboard(false,false);
       });
-    },20*1000);
+      setTimeout(refreshLeaderboard,20*1000);
+    };
+
+    setTimeout(refreshLeaderboard, 20*1000);
   }
 }
