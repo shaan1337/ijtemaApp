@@ -1,10 +1,6 @@
-## TODO for MKA Ijtema 2018
-- When seeding Competitions table in database, do upserts instead of creating new items each time (otherwise, the IDs change every time on startup and mapping gets messed up)
-- Sort data by ID when outputting CSVs /api/registrations/[literary|sport]
-- Trace the logo and make it a transparent PNG (Push notifications logo currently appears as a square white box)
+## TODO for MKA Ijtema 2019
 - Improve backend signup process
 - Add ability to register for blood donation
-- Test news notifications again (there was a bug where message was not appearing)
 
 ## Getting started with Development
 ```bash
@@ -15,3 +11,13 @@ $ npm install
 $ cp ./src/providers/api/apiconfig.ts.example ./src/providers/api/apiconfig.ts #Edit apiconfig.ts to put the backend url
 $ ionic serve
 ```
+
+For push notifications, you also need to add `google-services.json` downloaded from your firebase project to the root directory.
+
+## Deploying/Testing on Android
+```bash
+$ ionic cordova run android --device
+```
+
+## Creating a release build for Android
+Follow the steps from this URL: https://ionicframework.com/docs/v1/guide/publishing.html
