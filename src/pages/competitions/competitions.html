@@ -46,6 +46,11 @@
 
                   <p *ngIf="c.comment">{{ c.comment }}</p>
                   <p *ngIf="c.link"><a [href]="c.link.url">{{ c.link.text }}</a></p>
+                  <div *ngIf="c.links">
+                    <p *ngFor="let link of c.links">
+                        <a [href]="link.url">{{ link.text }}</a>
+                    </p>
+                  </div>
               </ion-item>
           </ion-list>
       </ion-card>
