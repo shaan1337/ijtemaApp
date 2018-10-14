@@ -6,28 +6,12 @@
 - Add ability to register for blood donation
 - Test news notifications again (there was a bug where message was not appearing)
 
-This is a starter template for [Ionic](http://ionicframework.com/docs/) projects.
-
-## How to use this template
-
-*This template does not work on its own*. The shared files for each starter are found in the [ionic2-app-base repo](https://github.com/ionic-team/ionic2-app-base).
-
-To use this template, either create a new ionic project using the ionic node.js utility, or copy the files from this repository into the [Starter App Base](https://github.com/ionic-team/ionic2-app-base).
-
-### With the Ionic CLI:
-
-Take the name after `ionic2-starter-`, and that is the name of the template to be used when using the `ionic start` command below:
-
+## Getting started with Development
 ```bash
 $ sudo npm install -g ionic cordova
-$ ionic start mySideMenu sidemenu
+$ git clone https://github.com/shaan1337/ijtemaApp.git
+$ cd ijtemaApp
+$ npm install
+$ cp ./src/providers/api/apiconfig.ts.example ./src/providers/api/apiconfig.ts #Edit apiconfig.ts to put the backend url
+$ ionic serve
 ```
-
-Then, to run it, cd into `mySideMenu` and run:
-
-```bash
-$ ionic cordova platform add ios
-$ ionic cordova run ios
-```
-
-Substitute ios for android if not on a Mac.
