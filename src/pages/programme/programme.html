@@ -28,7 +28,8 @@
 
     <ion-item *ngIf="p.type=='program'" id="{{ 'programme-' + p.id }}">
       <h1 item-start>{{ p.time }}</h1>
-      <div style="font-size:1.1em; margin-left: 5px" text-wrap>{{ p.title }}</div>
+      <div *ngIf="!p.important" style="font-size:1.1em; margin-left: 5px;" text-wrap>{{ p.title }}</div>
+      <div *ngIf="p.important" style="font-size:1.3em; margin-left: 5px; font-weight: bold;" text-wrap>{{ p.title }}</div>
     </ion-item>
 
     <ion-item *ngIf="p.type=='competition'" id="{{ 'programme-' + p.id }}">
