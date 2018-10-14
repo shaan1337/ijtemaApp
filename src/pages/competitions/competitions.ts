@@ -40,17 +40,21 @@ export class CompetitionsPage {
         p.competitions.forEach(competition => {
           var tag = competition.tag;
           
-          this.getRegistrationState(tag).then((res)=>{
-            this.registrationState[res.tag] = res.state;
-            if(competition.teamsize){ //teambased competition
-              if(res.value){
-                var val = JSON.parse(res.value);
-                var members = JSON.parse(val.members);
-                this.teamMembers[competition.tag] = members;
+          if(competition.noregister){
+            this.registrationState[competition.tag] = 'no-register';
+          }
+          else{
+            this.getRegistrationState(tag).then((res)=>{
+              this.registrationState[res.tag] = res.state;
+              if(competition.teamsize){ //teambased competition
+                if(res.value){
+                  var val = JSON.parse(res.value);
+                  var members = JSON.parse(val.members);
+                  this.teamMembers[competition.tag] = members;
+                }
               }
-            }
-          });
-
+            });
+          }
         });
       }
     }
