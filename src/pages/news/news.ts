@@ -20,6 +20,9 @@ export class NewsPage {
   @ViewChild('content') content:any;
   news:any[] = [];
 
+  private lastScrollTop: number = 0;
+  private direction: string = "";
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public apiProvider:ApiProvider,public http: Http) {
   }
 
@@ -27,14 +30,13 @@ export class NewsPage {
     return this.storage.get('news')
     .then((val)=>{
       if(!val) this.news = [];
-      else this.news = JSON.parse(val);  
-      
+      else this.news = JSON.parse(val);
+
       var from = -1;
       if(this.news.length > 0){
         from = this.news[this.news.length-1]['_id'];
       }
 
-      console.log('Loading from: '+from);
       if(loadFromWeb){
         this.http.get(this.apiProvider.getAPIURL() + '/news'+'/'+from).map(res => res.json()).subscribe(data => {
           for(var i=0;i<data.length;i++){
@@ -42,28 +44,46 @@ export class NewsPage {
           }
 
           this.storage.set('news',JSON.stringify(this.news));
-          if(callback)      
-            setTimeout(callback, 1000);          
+          if(callback)
+            setTimeout(callback, 1000);
         });
       }
-    
+
       return this.news;
-    });    
+    });
   }
 
   loadMore(infiniteScroll: InfiniteScroll) {
-    this.loadNews(true, () =>{
+    if(this.direction == 'down'){
       infiniteScroll.complete();
-    });
+    }
+    else{
+      this.loadNews(true, () =>{
+        infiniteScroll.complete();
+      });
+    }
   }
 
   scrollToBottom(){
     this.content.scrollToBottom(300);
   }
 
-  ionViewDidEnter() {    
+  ionViewDidEnter() {
     this.loadNews(true, () =>{
       this.scrollToBottom();
+    });
+
+    this.content.ionScrollEnd.subscribe((data)=>{
+      if(!data)
+        return;
+
+      let currentScrollTop = data.scrollTop;
+      if(currentScrollTop > this.lastScrollTop){
+        this.direction = 'down';
+      }else if(currentScrollTop < this.lastScrollTop){
+        this.direction = 'up';
+      }
+      this.lastScrollTop = currentScrollTop;
     });
   }
 
