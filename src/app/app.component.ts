@@ -61,7 +61,7 @@ export class MyApp {
 
   saveVersion(){
     //save version to manage app updates
-    this.storage.set('app-version','2017.01.01');
+    this.storage.set('app-version','2018.01.01');
   }
 
   openWelcomePage(){
