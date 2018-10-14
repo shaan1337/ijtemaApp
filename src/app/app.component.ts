@@ -25,6 +25,9 @@ export class MyApp {
 
   pages: Array<{title: string, component: any, icon: string}>;
 
+  //Note: incrementing the major or minor version will clear the local storage! Patch version can be incremented without any effect on local storage.
+  version: string = '2018.01.01';
+
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, private firebase: Firebase, private apiProvider: ApiProvider, private http: Http) {
     this.initializeApp();
 
@@ -33,7 +36,7 @@ export class MyApp {
       { title: 'Programme', component: ProgrammePage , icon: 'list-box'},
       { title: 'Competitions', component: CompetitionsPage, icon: 'trophy' },
       { title: 'Leaderboard', component: LeaderboardPage, icon: 'podium' },
-      { title: 'News', component: NewsPage, icon: 'information-circle' },      
+      { title: 'News', component: NewsPage, icon: 'information-circle' },
       { title: 'Social Networks', component: SocialPage, icon: 'thumbs-up' }
     ];
 
@@ -46,22 +49,30 @@ export class MyApp {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
-      this.saveVersion();
       this.initializeFirebase();
 
-      this.storage.get('welcomeCompleted').then((val) => {
-        if(val==undefined){
-          this.openWelcomePage();          
-        }
+      this.performVersionUpgrade()
+      .then(()=>{
+        this.storage.get('welcomeCompleted').then((val) => {
+          if(val==undefined){
+            this.openWelcomePage();
+          }
+        });
       });
-
-
     });
   }
 
-  saveVersion(){
-    //save version to manage app updates
-    this.storage.set('app-version','2018.01.01');
+  performVersionUpgrade(){
+    return this.storage.get('app-version')
+    .then((v)=>{
+      if(v!=null && (v.substring(0,7) < this.version.substring(0,7))){
+        return this.storage.clear();
+      }
+    })
+    .then(()=>{
+      //save version to manage app updates
+      this.storage.set('app-version',this.version);
+    })
   }
 
   openWelcomePage(){
@@ -78,18 +89,18 @@ export class MyApp {
     if(this.platform.is('cordova')){
       this.firebase.getToken()
       .then(token => {
-        return this.http.post(this.apiProvider.getAPIURL()+'/firebase-registrations/', {token: token}).toPromise()        
+        return this.http.post(this.apiProvider.getAPIURL()+'/firebase-registrations/', {token: token}).toPromise()
       })
       .catch(error => console.error('Error getting token', error));
-    
+
       this.firebase.onTokenRefresh()
       .subscribe((token: string) => {
-        this.http.post(this.apiProvider.getAPIURL()+'/firebase-registrations/', {token: token}).toPromise();        
+        this.http.post(this.apiProvider.getAPIURL()+'/firebase-registrations/', {token: token}).toPromise();
       });
 
       this.firebase.onNotificationOpen()
       .subscribe((notification: any) => {
-        this.nav.setRoot(NewsPage);        
+        this.nav.setRoot(NewsPage);
       });
     }
   }
