@@ -32,6 +32,14 @@ $ ionic cordova run android --device
 ## Creating a release build for Android
 Follow the steps from this URL: https://ionicframework.com/docs/v1/guide/publishing.html
 
+## Deploying to website
+```bash
+$ ionic build
+```
+
+This should generate a folder named `www`.
+Copy the contents of this folder to your web host.
+
 ## All ijtemaApp projects
 [ijtemaApp](https://github.com/shaan1337/ijtemaApp) - ionic mobile app  
 [ijtemaApp-backend](https://github.com/shaan1337/ijtemaApp-backend) - backend to ijtemaApp  
