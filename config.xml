@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.mkamu.ijtema" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>IjtemaMu 2018</name>
-    <description>MKA Mauritius National Ijtema - 19,20,21 October 2018</description>
+    <name>IjtemaMu 2019</name>
+    <description>MKA Mauritius National Ijtema - 30th,31st August and 1st September 2019</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
     <content src="index.html" />
     <access origin="*" />

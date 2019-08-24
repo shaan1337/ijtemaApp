@@ -26,7 +26,7 @@ export class MyApp {
   pages: Array<{title: string, component: any, icon: string}>;
 
   //Note: incrementing the major or minor version will clear the local storage! Patch version can be incremented without any effect on local storage.
-  version: string = '2018.01.01';
+  version: string = '2019.01.01';
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, private firebase: Firebase, private apiProvider: ApiProvider, private http: Http) {
     this.initializeApp();
