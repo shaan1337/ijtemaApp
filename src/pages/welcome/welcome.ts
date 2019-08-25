@@ -24,12 +24,12 @@ export class WelcomePage {
     },
     {
       title: "Stay tuned",
-      description: "View the <b>Program</b> and stay tuned throughout the Ijtema by browsing the <b>News</b> section",
+      description: "View the program and stay tuned throughout the Ijtema",
       image: "assets/img/programme.png",
     },
     {
       title: "Register for Competitions",
-      description: "Book your place for <b>Literary</b> or <b>Sports</b> competitions right from the app",
+      description: "Book your place for competitions right from the app",
       image: "assets/img/competitions.png",
     },
     {
