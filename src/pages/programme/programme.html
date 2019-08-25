@@ -21,7 +21,7 @@
       <p ion-text color="primary" style="font-style: italic; font-size: 1.4em">No data yet, stay tuned!</p>
   </ion-item>
 
-  <ion-list *ngFor="let p of programmes">          
+  <ion-list *ngFor="let p of programmes">
     <ion-item-divider *ngIf="p.type=='day'" color="primary" id="{{ 'programme-' + p.id }}">
         {{ p.title }}
     </ion-item-divider>
@@ -30,6 +30,18 @@
       <h1 item-start>{{ p.time }}</h1>
       <div *ngIf="!p.important" style="font-size:1.1em; margin-left: 5px;" text-wrap>{{ p.title }}</div>
       <div *ngIf="p.important" style="font-size:1.3em; margin-left: 5px; font-weight: bold;" text-wrap>{{ p.title }}</div>
+    </ion-item>
+
+    <ion-item no-lines *ngIf="p.type=='programs'" id="{{ 'programme-' + p.id }}">
+      <h1 item-start>{{ p.time }}</h1>
+      <div *ngIf="!p.important" style="font-size:1.1em; margin-left: 5px;" text-wrap>{{ p.title }}</div>
+      <div *ngIf="p.important" style="font-size:1.3em; margin-left: 5px; font-weight: bold;" text-wrap>{{ p.title }}</div>
+    </ion-item>
+
+    <ion-item *ngIf="p.type=='programs'">
+      <ion-list *ngFor="let k of p.programs">
+        <div style="font-size:1.1em; margin-left: 70px;" text-wrap>{{ k.title }}</div>
+      </ion-list>
     </ion-item>
 
     <ion-item *ngIf="p.type=='competition'" id="{{ 'programme-' + p.id }}">
