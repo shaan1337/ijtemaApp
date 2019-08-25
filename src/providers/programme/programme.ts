@@ -18,7 +18,7 @@ export class ProgrammeProvider {
   //'time' format: 'hh:mm'
   programmes = [];
 
-  constructor(public http: Http, public apiProvider: ApiProvider, public storage: Storage) {  
+  constructor(public http: Http, public apiProvider: ApiProvider, public storage: Storage) {
   }
 
   public getProgrammes(loadFromWeb, callback){
@@ -33,7 +33,7 @@ export class ProgrammeProvider {
 
       if(!val) this.programmes = [];
       else this.programmes = JSON.parse(val);
-      
+
       this.setIds();
 
       return this.programmes;
@@ -48,8 +48,17 @@ export class ProgrammeProvider {
 
   public getCompetitions(){
     var result = [];
+    var dayItem = null;
     for(var i=0;i<this.programmes.length;i++){
-      if(this.programmes[i].type=='day' || this.programmes[i].type == 'competition') result.push(this.programmes[i]);
+      if(this.programmes[i].type=='day'){
+        dayItem = this.programmes[i];
+      } else if(this.programmes[i].type == 'competition'){
+        if(dayItem != null){
+          result.push(dayItem);
+          dayItem = null;
+        }
+        result.push(this.programmes[i]);
+      }
     }
 
     return result;
@@ -109,10 +118,10 @@ export class ProgrammeProvider {
 
         if(date==undefined || startTime==undefined || endTime==undefined)
           throw "Invalid program item: "+JSON.stringify(p)+" at position: "+i+" date: "+date+" startTime: "+startTime+" endTime: "+endTime;
-        
+
         var start = date + startTime;
         var end = date + endTime;
-        
+
         if(now < start || (start<=now && now<end)){
           nextProgramme = i;
           break;
@@ -125,7 +134,7 @@ export class ProgrammeProvider {
     }
 
     if(nextProgramme==-1) nextProgramme = 0; //all programmes completed
-    
+
     return programmes[nextProgramme].id;
   }
 
