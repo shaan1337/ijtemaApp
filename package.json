@@ -33,7 +33,7 @@
         "cordova-plugin-firebasex": "^6.0.7",
         "cordova-plugin-splashscreen": "^4.1.0",
         "cordova-plugin-statusbar": "^2.4.2",
-        "cordova-plugin-whitelist": "^1.3.3",
+        "cordova-plugin-whitelist": "^1.3.4",
         "ionic-angular": "3.6.1",
         "ionic-plugin-keyboard": "^2.2.1",
         "ionicons": "3.0.0",
@@ -53,9 +53,9 @@
             "cordova-plugin-device": {},
             "cordova-plugin-splashscreen": {},
             "cordova-plugin-statusbar": {},
-            "cordova-plugin-whitelist": {},
             "ionic-plugin-keyboard": {},
-            "cordova-plugin-firebasex": {}
+            "cordova-plugin-firebasex": {},
+            "cordova-plugin-whitelist": {}
         },
         "platforms": [
             "android"
