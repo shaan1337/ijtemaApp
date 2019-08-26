@@ -98,9 +98,11 @@ export class MyApp {
         this.http.post(this.apiProvider.getAPIURL()+'/firebase-registrations/', {token: token}).toPromise();
       });
 
-      this.firebase.onNotificationOpen()
-      .subscribe((notification: any) => {
-        this.nav.setRoot(NewsPage);
+      var o = this;
+      (<any>window).FirebasePlugin.onMessageReceived(function(message) {
+        o.nav.setRoot(NewsPage);
+      }, function(error) {
+        console.error(error);
       });
     }
   }
