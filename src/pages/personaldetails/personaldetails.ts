@@ -20,7 +20,7 @@ import { ApiProvider } from '../../providers/api/api';
 export class PersonaldetailsPage {
   loading: boolean = false;
   detailsExist: boolean = false;
-  detailsForm:FormGroup;  
+  detailsForm:FormGroup;
   majlisWithHalqa: any = {'quatre-bornes': true,'rose-hill': true,'trefles': true}
   storageTag: any = 'competitions-personal-details';
 
@@ -29,14 +29,22 @@ export class PersonaldetailsPage {
       name: ['', Validators.compose([Validators.required,Validators.pattern("^[A-Za-z ,.'-]+$")])],
       mobile: ['', Validators.compose([Validators.required,Validators.minLength(8),Validators.maxLength(8),Validators.pattern("5[0-9]{7}")])],
       majlis: ['', Validators.required],
-      halqa: ['']     
+      halqa: ['']
     });
 
     this.detailsForm.get('name').valueChanges.subscribe(data => {
       //force name to uppercase
       var name = this.detailsForm.get('name').value;
-      if(name != name.toUpperCase()){
-        this.detailsForm.patchValue({name: name.toUpperCase()});
+      var newName = '';
+      for(var i=0;i<name.length;i++){
+        if(i==0 || (i>=1 && name[i-1]==' ')){
+          newName += name[i].toUpperCase();
+        } else{
+          newName += name[i];
+        }
+      }
+      if(newName != name){
+        this.detailsForm.patchValue({name: newName });
       }
     });
 
@@ -48,11 +56,11 @@ export class PersonaldetailsPage {
       halqaControl.patchValue('');
 
       if(majlis in this.majlisWithHalqa)
-        halqaControl.setValidators([Validators.required]);        
+        halqaControl.setValidators([Validators.required]);
       else
-        halqaControl.clearValidators();        
+        halqaControl.clearValidators();
 
-      halqaControl.updateValueAndValidity();     
+      halqaControl.updateValueAndValidity();
     });
 
     this.loadCurrentValues();
@@ -93,7 +101,7 @@ export class PersonaldetailsPage {
           for(var key in details){
             patches.push({op:'replace',path:'/'+key,value:details[key]});
           }
-          return this.http.patch(this.apiProvider.getAPIURL()+'/personaldetails'+'/'+data._id+'/'+data.token, patches).toPromise();          
+          return this.http.patch(this.apiProvider.getAPIURL()+'/personaldetails'+'/'+data._id+'/'+data.token, patches).toPromise();
         }
       })
       .then(
