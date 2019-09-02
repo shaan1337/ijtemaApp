@@ -19,17 +19,17 @@ export class WelcomePage {
   slides = [
     {
       title: "Assalamu alaikum wa rahmatullah!",
-      description: "Welcome to the official app for the <br><b>Majlis Khuddam-ul-Ahmadiyya Mauritius National Ijtema 2018</b>!",
+      description: "Welcome to the official app for the <br><b>Majlis Khuddam-ul-Ahmadiyya Mauritius National Ijtema 2019</b>!",
       image: "assets/img/logo.png",
     },
     {
       title: "Stay tuned",
-      description: "View the <b>Program</b> and stay tuned throughout the Ijtema by browsing the <b>News</b> section",
+      description: "View the program and stay tuned throughout the Ijtema",
       image: "assets/img/programme.png",
     },
     {
       title: "Register for Competitions",
-      description: "Book your place for <b>Literary</b> or <b>Sports</b> competitions right from the app",
+      description: "Book your place for competitions right from the app",
       image: "assets/img/competitions.png",
     },
     {
